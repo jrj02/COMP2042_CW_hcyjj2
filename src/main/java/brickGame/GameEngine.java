@@ -1,105 +1,55 @@
+
 package brickGame;
 
+import javafx.animation.AnimationTimer;
 
 public class GameEngine {
 
     private OnAction onAction;
-    private int fps = 120;
-    private Thread updateThread;
-    private Thread physicsThread;
-    public boolean isStopped = true;
+    private long lastUpdateTime = 0;
+    private boolean isStopped = true;
+    private long time = 0;
 
     public void setOnAction(OnAction onAction) {
         this.onAction = onAction;
     }
 
-    /**
-     * @param fps set fps and we convert it to millisecond
-     */
     public void setFps(int fps) {
-        this.fps = (int) 1000 / fps;
-    }
-
-    private synchronized void Update() {
-        updateThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!updateThread.isInterrupted()) {
-                    try {
-                        onAction.onUpdate();
-                        Thread.sleep(fps);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        updateThread.start();
-    }
-
-    private void Initialize() {
-        onAction.onInit();
-    }
-
-    private synchronized void PhysicsCalculation() {
-        physicsThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!physicsThread.isInterrupted()) {
-                    try {
-                        onAction.onPhysicsUpdate();
-                        Thread.sleep(fps);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        physicsThread.start();
-
+        // Ignore setting fps, as it is not needed in AnimationTimer
     }
 
     public void start() {
-        time = 0;
-        Initialize();
-        Update();
-        PhysicsCalculation();
-        TimeStart();
+        lastUpdateTime = 0;
         isStopped = false;
+        onAction.onInit();
+
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (lastUpdateTime == 0) {
+                    lastUpdateTime = now;
+                }
+
+                long elapsedNanoSeconds = now - lastUpdateTime;
+                double elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
+
+                onAction.onUpdate();
+                onAction.onPhysicsUpdate();
+
+                lastUpdateTime = now;
+                time++;
+                onAction.onTime(time);
+
+                if (isStopped) {
+                    stop();
+                }
+            }
+        }.start();
     }
 
     public void stop() {
-        if (!isStopped) {
-            isStopped = true;
-            updateThread.stop();
-            physicsThread.stop();
-            timeThread.stop();
-        }
+        isStopped = true;
     }
-
-    private long time = 0;
-
-    private Thread timeThread;
-
-    private void TimeStart() {
-        timeThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        time++;
-                        onAction.onTime(time);
-                        Thread.sleep(1);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        timeThread.start();
-    }
-
 
     public interface OnAction {
         void onUpdate();
@@ -110,5 +60,4 @@ public class GameEngine {
 
         void onTime(long time);
     }
-
 }
