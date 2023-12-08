@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class BrickBreakerMenu extends Application {
+public class BrickBreakerMainMenu extends Application {
     private Stage stage;
     private Scene scene;
     private VBox root;
