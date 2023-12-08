@@ -272,7 +272,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     }
 
-
     private void initBall() {
         Random random = new Random();
         xBall = random.nextInt(sceneWidth) + 1;
@@ -306,8 +305,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private boolean collideToLeftBlock           = false;
     private boolean collideToTopBlock            = false;
 
-    private double vX = 1.000;
-    private double vY = 1.000;
+    private double vX = 2.000;
+    private double vY = 2.000;
 
 
     private void resetCollideFlags() {
@@ -348,25 +347,25 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
         if (yBall >= sceneHeight) {
-            synchronized (this){ // added synchronized this to ensure only one thread can execute this portion of the code at a time. Prevents multiple threads from decrementing the health count simultaneously.
-            goDownBall = false;
-            if (!isGoldStatus) {
-                //TODO gameover
-                heart--;
-                new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
+            synchronized (this) { //added synchronize this to ensure only one thread can execute at a time. Prevents multiple threads from decrementing heart simultaneously.
+                goDownBall = false;
+                if (!isGoldStatus) {
+                    //TODO gameover
+                    heart--;
+                    new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
 
-                if (heart == 0) {
-                    new Score().showGameOver(this);
-                    engine.stop();
+                    if (heart == 0) {
+                        new Score().showGameOver(this);
+                        engine.stop();
+                    }
                 }
-
-            }
             }
             //return;
         }
 
+
         if (yBall >= yBreak - ballRadius) {
-            //System.out.println("Colide1");
+            //System.out.println("Collide1");
             if (xBall >= xBreak && xBall <= xBreak + breakWidth) {
                 hitTime = time;
                 resetCollideFlags();
@@ -393,13 +392,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         if (xBall >= sceneWidth) {
             resetCollideFlags();
-            //vX = 1.000;
+            //vX = 2.000;
             collideToRightWall = true;
         }
 
         if (xBall <= 0) {
             resetCollideFlags();
-            //vX = 1.000;
+            //vX = 2.000;
             collideToLeftWall = true;
         }
 
@@ -439,17 +438,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void checkTopBoundary() {
         // Check if the ball hits the top boundary
-        if (yBall <= 0) {
+        if (yBall - ballRadius<= 0) {
             resetCollideFlags();
             goDownBall = true;
-             vY = Math.abs(vY); // Adjust velocity to ensure the ball moves down
+             vY = Math.abs(vY);
         }
     }
 
     private void checkLeftBoundary() {
-        // Check if the ball hits the left boundary
-        if (xBall <= 0) {
-
+        if (xBall - ballRadius <= 0) {
             goRightBall = true; // Change direction to move right
         }
     }
@@ -468,6 +465,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             nextLevel();
         }
     }
+
 
     private void saveGame() {
         new Thread(new Runnable() {
@@ -545,17 +543,17 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
         isExistHeartBlock = loadSave.isExistHeartBlock;
-        isGoldStatus = loadSave.isGoldStauts;
+        isGoldStatus = loadSave.isGoldStatus;
         goDownBall = loadSave.goDownBall;
         goRightBall = loadSave.goRightBall;
-        collideToBreak = loadSave.colideToBreak;
-        collideToBreakAndMoveToRight = loadSave.colideToBreakAndMoveToRight;
-        collideToRightWall = loadSave.colideToRightWall;
-        collideToLeftWall = loadSave.colideToLeftWall;
-        collideToRightBlock = loadSave.colideToRightBlock;
-        collideToBottomBlock = loadSave.colideToBottomBlock;
-        collideToLeftBlock = loadSave.colideToLeftBlock;
-        collideToTopBlock = loadSave.colideToTopBlock;
+        collideToBreak = loadSave.collideToBreak;
+        collideToBreakAndMoveToRight = loadSave.collideToBreakAndMoveToRight;
+        collideToRightWall = loadSave.collideToRightWall;
+        collideToLeftWall = loadSave.collideToLeftWall;
+        collideToRightBlock = loadSave.collideToRightBlock;
+        collideToBottomBlock = loadSave.collideToBottomBlock;
+        collideToLeftBlock = loadSave.collideToLeftBlock;
+        collideToTopBlock = loadSave.collideToTopBlock;
         level = loadSave.level;
         score = loadSave.score;
         heart = loadSave.heart;
@@ -593,7 +591,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             @Override
             public void run() {
                 try {
-                    vX = 1.000;
+                    vX = 2.000;
 
                     engine.stop();
                     resetCollideFlags();
@@ -626,7 +624,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             level = 0;
             heart = 3;
             score = 0;
-            vX = 1.000;
+            vX = 2.000;
             destroyedBlockCount = 0;
             resetCollideFlags();
             goDownBall = true;
@@ -670,7 +668,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         if (yBall >= Block.getPaddingTop() && yBall <= (Block.getHeight() * (level + 1)) + Block.getPaddingTop()) {
             for (final Block block : blocks) {
-                int hitCode = block.checkHitToBlock(xBall, yBall, 10);
+                int hitCode = block.checkHitToBlock(xBall, yBall, ballRadius);
                 if (hitCode != Block.NO_HIT) {
                     score += 1;
 
@@ -735,7 +733,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         checkDestroyedCount();
         setPhysicsToBall();
 
-
         if (time - goldTime > 1000 && isGoldStatus) { //changed 5000 to 1000 to make it more fair and challenging
             ball.setFill(new ImagePattern(new Image("ball.png")));
             root.getStyleClass().remove("goldRoot");
@@ -753,7 +750,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 score += 3;
                 new Score().show(choco.x, choco.y, 3, this);
             }
-            choco.y += ((time - choco.timeCreated) / 1000.000) + 2.000; //changed it from 1.000 to 2.000 to make it drop faster
+            choco.y += ((time - choco.timeCreated) / 1000.000) + 2.000; //changed 1.000 to 2.000 to make the drop faster
         }
 
         //System.out.println("time is:" + time + " goldTime is " + goldTime);
