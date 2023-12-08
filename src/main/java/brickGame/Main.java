@@ -348,6 +348,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
         if (yBall >= sceneHeight) {
+            synchronized (this){ // added synchronized this to ensure only one thread can execute this portion of the code at a time. Prevents multiple threads from decrementing the health count simultaneously.
             goDownBall = false;
             if (!isGoldStatus) {
                 //TODO gameover
@@ -359,6 +360,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     engine.stop();
                 }
 
+            }
             }
             //return;
         }
@@ -453,11 +455,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void checkRightBoundary() {
-        // Check if the ball hits the right boundary
-        // Adjust screenWidth based on your actual screen width
         if (xBall + ballRadius >= sceneWidth) {
-            // Handle right boundary
-            // For example:
             goRightBall = false; // Change direction to move left
         }
     }
