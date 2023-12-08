@@ -736,7 +736,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         setPhysicsToBall();
 
 
-        if (time - goldTime > 5000) {
+        if (time - goldTime > 1000 && isGoldStatus) { //changed 5000 to 1000 to make it more fair and challenging
             ball.setFill(new ImagePattern(new Image("ball.png")));
             root.getStyleClass().remove("goldRoot");
             isGoldStatus = false;
@@ -753,7 +753,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 score += 3;
                 new Score().show(choco.x, choco.y, 3, this);
             }
-            choco.y += ((time - choco.timeCreated) / 1000.000) + 1.000;
+            choco.y += ((time - choco.timeCreated) / 1000.000) + 2.000; //changed it from 1.000 to 2.000 to make it drop faster
         }
 
         //System.out.println("time is:" + time + " goldTime is " + goldTime);
