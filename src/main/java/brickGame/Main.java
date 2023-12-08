@@ -365,8 +365,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
         if (yBall >= yBreak - ballRadius) {
-            //System.out.println("Collide1");
-            if (xBall >= xBreak && xBall <= xBreak + breakWidth) {
+            if (xBall + ballRadius >= xBreak && xBall - ballRadius <= xBreak + breakWidth) {
+                // Collision with the platform
                 hitTime = time;
                 resetCollideFlags();
                 collideToBreak = true;
@@ -375,18 +375,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 double relation = (xBall - centerBreakX) / ((double) breakWidth / 2);
 
                 if (Math.abs(relation) <= 0.3) {
-                    //vX = 0;
-                    vX = Math.abs(relation);
+                    vX = Math.abs(vX);
                 } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
                     vX = (Math.abs(relation) * 1.5) + (level / 3.500);
-                    //System.out.println("vX " + vX);
                 } else {
                     vX = (Math.abs(relation) * 2) + (level / 3.500);
-                    //System.out.println("vX " + vX);
                 }
 
                 collideToBreakAndMoveToRight = xBall - centerBreakX > 0;
-                //System.out.println("Collide2");
             }
         }
 
