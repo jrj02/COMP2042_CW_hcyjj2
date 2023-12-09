@@ -96,31 +96,52 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        initializeLevel();
+    }
 
-
-        if (!loadFromSave) {
-            level++;
-            if (level >1){
-                new Score().showMessage("Level Up :)", this);
+    private void nextLevel() {
+        Platform.runLater(() -> {
+            try {
+                vX = 2.000;
+                engine.stop();
+                resetCollideFlags();
+                goDownBall = true;
+                isGoldStatus = false;
+                isExistHeartBlock = false;
+                hitTime = 0;
+                time = 0;
+                goldTime = 0;
+                engine.stop();
+                blocks.clear();
+                chocos.clear();
+                destroyedBlockCount = 0;
+                initializeLevel();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (level == 10) {
-                new Score().showWin(this);
-                return;
-            }
+        });
+    }
 
-            initBall();
-            initBreak();
-            initBoard();
-
-            load = new Button("Load Game");
-            newGame = new Button("Start New Game");
-            load.setTranslateX(220);
-            load.setTranslateY(300);
-            newGame.setTranslateX(220);
-            newGame.setTranslateY(340);
-
+    private void initializeLevel() {
+        level++;
+        if (level > 1) {
+            new Score().showMessage("Level Up :)", this);
+        }
+        if (level == 10) {
+            new Score().showWin(this);
+            return;
         }
 
+        initBall();
+        initBreak();
+        initBoard();
+
+        load = new Button("Load Game");
+        newGame = new Button("Start New Game");
+        load.setTranslateX(220);
+        load.setTranslateY(300);
+        newGame.setTranslateX(220);
+        newGame.setTranslateY(340);
 
         root = new Pane();
         scoreLabel = new Label("Score: " + score);
@@ -136,6 +157,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         for (Block block : blocks) {
             root.getChildren().add(block.rect);
         }
+
         Scene scene = new Scene(root, sceneWidth, sceneHeight);
         scene.getStylesheets().add("style.css");
         scene.setOnKeyPressed(this);
@@ -158,7 +180,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 @Override
                 public void handle(ActionEvent event) {
                     loadGame();
-
                     load.setVisible(false);
                     newGame.setVisible(false);
                 }
@@ -171,7 +192,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     engine.setOnAction(Main.this);
                     engine.setFps(120);
                     engine.start();
-
                     load.setVisible(false);
                     newGame.setVisible(false);
                 }
@@ -183,8 +203,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             engine.start();
             loadFromSave = false;
         }
-
-
     }
 
     private void initBoard() {
@@ -582,38 +600,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
 
 
-    }
-
-    private void nextLevel() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    vX = 2.000;
-
-                    engine.stop();
-                    resetCollideFlags();
-                    goDownBall = true;
-
-                    isGoldStatus = false;
-                    isExistHeartBlock = false;
-
-
-                    hitTime = 0;
-                    time = 0;
-                    goldTime = 0;
-
-                    engine.stop();
-                    blocks.clear();
-                    chocos.clear();
-                    destroyedBlockCount = 0;
-                    start(primaryStage);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     public void restartGame() {
