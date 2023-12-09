@@ -346,7 +346,9 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         checkRightBoundary();
 
 
-        if (yBall >= sceneHeight) {
+        if (yBall +ballRadius >= sceneHeight) {
+            
+            resetCollideFlags()
             synchronized (this) { //added synchronize this to ensure only one thread can execute at a time. Prevents multiple threads from decrementing heart simultaneously.
                 goDownBall = false;
                 if (!isGoldStatus) {
