@@ -132,9 +132,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             return;
         }
 
-        initBall();
-        initBreak();
-        initBoard();
+        if (!loadFromSave && blocks.isEmpty()) {
+            initBall();
+            initBreak();
+            initBoard();
+        }
 
         load = new Button("Load Game");
         newGame = new Button("Start New Game");
@@ -150,7 +152,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         heartLabel = new Label("Heart : " + heart);
         heartLabel.setTranslateX(sceneWidth - 70);
         if (!loadFromSave) {
-            root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel, newGame);
+            root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel, newGame, load);
         } else {
             root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
         }
@@ -573,7 +575,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         level = loadSave.level;
         score = loadSave.score;
         heart = loadSave.heart;
-        destroyedBlockCount = loadSave.destroyedBlockCount;
+        destroyedBlockCount = 0;
         xBall = loadSave.xBall;
         yBall = loadSave.yBall;
         xBreak = loadSave.xBreak;
