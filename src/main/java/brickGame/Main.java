@@ -384,12 +384,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                  synchronized (this) {
                      goDownBall = false;
                      if (!isGoldStatus) {
-                         //TODO gameover
                          int currentHeart = heart.getAndDecrement();
                          new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
+                         if (currentHeart > 1) {
+                        Sound.playLoseHeartSound();
+                    }
 
                          if (currentHeart == 1) {
                              new Score().showGameOver(this);
+                             Sound.playLoseGameSound();
                              engine.stop();
                          }
                      }
@@ -677,8 +680,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     block.rect.setVisible(false);
                     block.isDestroyed = true;
                     destroyedBlockCount++;
-                    //System.out.println("size is " + blocks.size());
                     resetCollideFlags();
+                    Sound.playBlockBreakSound();
 
                     if (block.type == Block.BLOCK_CHOCO) {
                         final Bonus choco = new Bonus(block.row, block.column);
