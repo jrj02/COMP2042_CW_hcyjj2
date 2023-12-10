@@ -8,11 +8,10 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
-
 //import sun.plugin2.message.Message;
 
 public class Score {
-   public void show(final double x, final double y, int score, final Main main) {
+    public void show(final double x, final double y, int score, final Main main) {
         String sign = (score >= 0) ? "+" : "";
         final Label label = new Label(sign + score);
         label.setTranslateX(x);
