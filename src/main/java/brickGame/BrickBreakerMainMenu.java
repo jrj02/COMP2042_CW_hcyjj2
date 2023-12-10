@@ -22,7 +22,6 @@ import javafx.util.Duration;
 
 
 public class BrickBreakerMainMenu extends Application {
-    private Main game = new Main();
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(createContent()));
@@ -34,9 +33,10 @@ public class BrickBreakerMainMenu extends Application {
 
         root.setPrefSize(500, 700);
 
-        Image bgImage = new Image(getClass().getResource("/MainMenuImage.jpg").toExternalForm(), 500, 700, false, true);
+        Image bgImage = new Image(getClass().getResource("/MainMenuImage.png").toExternalForm(), 500, 700, false, true);
 
-        VBox box = new VBox(10, new MainMenuButton("Start", () -> {
+
+        VBox box = new VBox(10, new MainMenuButton("Enter Game", () -> {
             try {
                 Main MainGame = new Main();
                 MainGame.start(new Stage());
@@ -44,7 +44,6 @@ public class BrickBreakerMainMenu extends Application {
                 ex.printStackTrace();
             }
         }),
-                new MainMenuButton("LoadSave", () -> {}),
                 new MainMenuButton("Exit", Platform::exit));
 
         box.setBackground(new Background(new BackgroundFill(Color.web("black", 0.6), null, null)));
