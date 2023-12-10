@@ -248,8 +248,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                 move(RIGHT);
                 break;
-            case DOWN:
-                //setPhysicsToBall();
+            case ESCAPE:
+                if (engine != null) {
+                    engine.stop();
+                }
+                showMainMenu();
                 break;
             case S:
                 saveGame();
@@ -257,7 +260,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
     }
 
-    float oldXBreak;
+    private void showMainMenu() {
+        BrickBreakerMainMenu mainMenu = new BrickBreakerMainMenu();
+        try {
+            mainMenu.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void move(final int direction) {
         new Thread(new Runnable() {
