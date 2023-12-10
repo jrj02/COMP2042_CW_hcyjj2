@@ -94,6 +94,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         initializeLevel();
+        Sound.playInGameMusic();
     }
 
     private void nextLevel() {
@@ -253,6 +254,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             case ESCAPE:
                 if (engine != null) {
                     engine.stop();
+                    Sound.stopInGameMusic();
                 }
                 showMainMenu();
                 break;
@@ -618,6 +620,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public void restartGame() {
 
         try {
+            Sound.stopInGameMusic();
             level = 0;
             heart = new AtomicInteger(3);
             score = 0;
