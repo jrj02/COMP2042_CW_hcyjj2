@@ -80,62 +80,30 @@ public class Block implements Serializable {
     }
 
 
-    public int checkHitToBlock(double xBall, double yBall) {
+    public int checkHitToBlock(double xBall, double yBall, double ballRadius) {
+
         if (isDestroyed) {
             return NO_HIT;
         }
 
-        double epsilon = 1e-5;
-
-        int ballradius = 10;
-
-        if (xBall + ballradius >= x && xBall - ballradius <= x + width && Math.abs(yBall - (y + height)) < epsilon) {
+        if (xBall >= x && xBall <= x + width && yBall - ballRadius <= y + height && yBall + ballRadius > y + height) {
             return HIT_BOTTOM;
         }
 
-        if (xBall + ballradius >= x && xBall - ballradius <= x + width && Math.abs(yBall - y) < epsilon) {
+        if (xBall >= x && xBall <= x + width && yBall + ballRadius >= y && yBall - ballRadius < y) {
             return HIT_TOP;
         }
 
-        if (yBall + ballradius >= y && yBall - ballradius <= y + height && Math.abs(xBall - (x + width)) < epsilon) {
+        if (yBall >= y && yBall <= y + height && xBall - ballRadius <= x + width && xBall + ballRadius > x + width) {
             return HIT_RIGHT;
         }
 
-        if (yBall + ballradius >= y && yBall - ballradius <= y + height && Math.abs(xBall - x) < epsilon) {
+        if (yBall >= y && yBall <= y + height && xBall + ballRadius >= x && xBall - ballRadius < x) {
             return HIT_LEFT;
         }
 
         return NO_HIT;
     }
-
-
-   /* public int checkHitToBlock(double xBall, double yBall) {
-        if (isDestroyed) {
-            return NO_HIT;
-        }
-
-        // Define a small epsilon value to handle rounding errors
-        double epsilon = 1e-10;
-
-        if (xBall >= x && xBall <= x + width && Math.abs(yBall - (y + height)) < epsilon) {
-            return HIT_BOTTOM;
-        }
-
-        if (xBall >= x && xBall <= x + width && Math.abs(yBall - y) < epsilon) {
-            return HIT_TOP;
-        }
-
-        if (yBall >= y && yBall <= y + height && Math.abs(xBall - (x + width)) < epsilon) {
-            return HIT_RIGHT;
-        }
-
-        if (yBall >= y && yBall <= y + height && Math.abs(xBall - x) < epsilon) {
-            return HIT_LEFT;
-        }
-
-        return NO_HIT;
-    } */
-
 
     public static int getPaddingTop() {
         return block.paddingTop;
