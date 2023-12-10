@@ -21,9 +21,12 @@ import javafx.geometry.Pos;
 import javafx.util.Duration;
 
 
+
 public class BrickBreakerMainMenu extends Application {
+    private Stage primaryStage;
     @Override
     public void start(Stage stage) throws Exception {
+        this.primaryStage = stage;
         stage.setScene(new Scene(createContent()));
         stage.show();
         Sound.playBackgroundMusic();
@@ -33,14 +36,12 @@ public class BrickBreakerMainMenu extends Application {
         Pane root = new Pane();
 
         root.setPrefSize(500, 700);
-
         Image bgImage = new Image(getClass().getResource("/MainMenuImage.png").toExternalForm(), 500, 700, false, true);
-
 
         VBox box = new VBox(10, new MainMenuButton("Enter Game", () -> {
             try {
-                Main MainGame = new Main();
-                MainGame.start(new Stage());
+                Sound.stopBackgroundMusic();
+                startGame();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -52,15 +53,16 @@ public class BrickBreakerMainMenu extends Application {
         box.setTranslateY(500);
 
         root.getChildren().addAll(new ImageView(bgImage), box);
-
         return root;
     }
-
+    private void startGame() throws Exception {
+        Main mainGame = new Main();
+        mainGame.start(primaryStage);
+    }
     @Override
     public void stop() {
         Sound.stopBackgroundMusic();
     }
-    
     private static class MainMenuButton extends StackPane {
         MainMenuButton(String name, Runnable action) {
             LinearGradient gradient = new LinearGradient(0, 0.5, 1, 0.5, true, CycleMethod.NO_CYCLE,
@@ -104,7 +106,6 @@ public class BrickBreakerMainMenu extends Application {
 
             getChildren().addAll(bg, bg1, box);
         }
-
         public static void main(String[] args) {
             launch(args);
         }
