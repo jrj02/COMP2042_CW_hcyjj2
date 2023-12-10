@@ -26,6 +26,7 @@ public class BrickBreakerMainMenu extends Application {
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(createContent()));
         stage.show();
+        Sound.playBackgroundMusic();
     }
 
     private Parent createContent() {
@@ -55,6 +56,11 @@ public class BrickBreakerMainMenu extends Application {
         return root;
     }
 
+    @Override
+    public void stop() {
+        Sound.stopBackgroundMusic();
+    }
+    
     private static class MainMenuButton extends StackPane {
         MainMenuButton(String name, Runnable action) {
             LinearGradient gradient = new LinearGradient(0, 0.5, 1, 0.5, true, CycleMethod.NO_CYCLE,
