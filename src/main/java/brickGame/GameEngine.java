@@ -15,7 +15,6 @@ public class GameEngine {
     }
 
     public void setFps(int fps) {
-        // Ignore setting fps, as it is not needed in AnimationTimer
     }
 
     public void start() {
