@@ -38,9 +38,10 @@ public class BrickBreakerMainMenu extends Application {
 
         VBox box = new VBox(10, new MainMenuButton("Start", () -> {
             try {
-                game.start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
+                Main MainGame = new Main();
+                MainGame.start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }),
                 new MainMenuButton("LoadSave", () -> {}),
