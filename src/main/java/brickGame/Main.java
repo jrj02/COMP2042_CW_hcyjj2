@@ -140,10 +140,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         load = new Button("Load Existing Game");
         newGame = new Button("Start New Game");
-        load.setTranslateX(220);
-        load.setTranslateY(300);
-        newGame.setTranslateX(220);
-        newGame.setTranslateY(340);
+        load.setTranslateX(190);
+        load.setTranslateY(340);
+        newGame.setTranslateX(200);
+        newGame.setTranslateY(300);
+        load.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-size: 14");
+        newGame.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-size: 14");
 
         root = new Pane();
         scoreLabel = new Label("Score: " + score);
