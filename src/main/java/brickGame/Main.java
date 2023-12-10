@@ -15,13 +15,12 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
-
+public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction{
 
     private int level = 0;
 
@@ -52,10 +51,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private int destroyedBlockCount = 0;
 
-   // private double v = 1.000; commented out bec no usages yet
 
-
-    private int  heart    = 3;
+    private AtomicInteger heart    = new AtomicInteger(3);
     private int  score    = 0;
     private long time     = 0;
     private long hitTime  = 0;
@@ -123,13 +120,16 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void initializeLevel() {
-        level++;
-        if (level > 1) {
-            new Score().showMessage("Level Up :)", this);
-        }
-        if (level == 10) {
-            new Score().showWin(this);
-            return;
+
+        if (!loadFromSave) {
+            level++;
+            if (level > 1) {
+                new Score().showMessage("Level Up :)", this);
+            }
+            if (level == 10) {
+                new Score().showWin(this);
+                return;
+            }
         }
 
         if (!loadFromSave && blocks.isEmpty()) {
@@ -138,7 +138,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             initBoard();
         }
 
-        load = new Button("Load Game");
+        load = new Button("Load Existing Game");
         newGame = new Button("Start New Game");
         load.setTranslateX(220);
         load.setTranslateY(300);
@@ -288,8 +288,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 }
             }
         }).start();
-
-
     }
 
     private void initBall() {
@@ -303,6 +301,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void initBreak() {
         rect = new Rectangle();
+
         rect.setWidth(breakWidth);
         rect.setHeight(breakHeight);
         rect.setX(xBreak);
@@ -365,23 +364,22 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         checkLeftBoundary();
         checkRightBoundary();
 
+        if (yBall + ballRadius>= sceneHeight) {
 
-        if (yBall +ballRadius >= sceneHeight) {
-            
-            resetCollideFlags()
-            synchronized (this) { //added synchronize this to ensure only one thread can execute at a time. Prevents multiple threads from decrementing heart simultaneously.
-                goDownBall = false;
-                if (!isGoldStatus) {
-                    //TODO gameover
-                    heart--;
-                    new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
+                 resetCollideFlags();
+                 synchronized (this) {
+                     goDownBall = false;
+                     if (!isGoldStatus) {
+                         //TODO gameover
+                         int currentHeart = heart.getAndDecrement();
+                         new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
 
-                    if (heart == 0) {
-                        new Score().showGameOver(this);
-                        engine.stop();
-                    }
-                }
-            }
+                         if (currentHeart == 1) {
+                             new Score().showGameOver(this);
+                             engine.stop();
+                         }
+                     }
+                 }
             //return;
         }
 
@@ -407,6 +405,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 collideToBreakAndMoveToRight = xBall - centerBreakX > 0;
             }
         }
+
 
         if (xBall >= sceneWidth) {
             resetCollideFlags();
@@ -497,7 +496,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                     outputStream.writeInt(level);
                     outputStream.writeInt(score);
-                    outputStream.writeInt(heart);
+                    outputStream.writeInt(heart.get());
                     outputStream.writeInt(destroyedBlockCount);
 
 
@@ -534,8 +533,9 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                     outputStream.writeObject(blockSerializables);
 
-                    new Score().showMessage("Game Saved", Main.this);
-
+                    Platform.runLater(() -> {
+                        new Score().showMessage("Game Saved", Main.this);
+                    });
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -559,7 +559,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         LoadSave loadSave = new LoadSave();
         loadSave.read();
 
-
         isExistHeartBlock = loadSave.isExistHeartBlock;
         isGoldStatus = loadSave.isGoldStatus;
         goDownBall = loadSave.goDownBall;
@@ -574,7 +573,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         collideToTopBlock = loadSave.collideToTopBlock;
         level = loadSave.level;
         score = loadSave.score;
-        heart = loadSave.heart;
+        heart.set(loadSave.heart);
         destroyedBlockCount = 0;
         xBall = loadSave.xBall;
         yBall = loadSave.yBall;
@@ -596,7 +595,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         try {
             loadFromSave = true;
-            start(primaryStage);
+            initializeLevel();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -608,7 +607,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         try {
             level = 0;
-            heart = 3;
+            heart = new AtomicInteger(3);
             score = 0;
             vX = 2.000;
             destroyedBlockCount = 0;
@@ -687,7 +686,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
 
                     if (block.type == Block.BLOCK_HEART) {
-                        heart++;
+                        heart.incrementAndGet();
                     }
 
                     if (hitCode == Block.HIT_RIGHT) {
@@ -718,6 +717,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public void onPhysicsUpdate() {
         checkDestroyedCount();
         setPhysicsToBall();
+
 
         if (time - goldTime > 1000 && isGoldStatus) { //changed 5000 to 1000 to make it more fair and challenging
             ball.setFill(new ImagePattern(new Image("ball.png")));
