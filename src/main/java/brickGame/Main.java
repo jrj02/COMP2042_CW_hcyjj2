@@ -200,6 +200,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             newGame.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+                    Sound.playSelectButton();
                     engine = new GameEngine();
                     engine.setOnAction(Main.this);
                     engine.setFps(120);
@@ -209,6 +210,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 }
             });
         } else {
+            Sound.playSelectButton();
             engine = new GameEngine();
             engine.setOnAction(this);
             engine.setFps(120);
@@ -720,7 +722,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
 
                     if (block.type == Block.BLOCK_HEART) {
-                        Sound.playObtainPowerUp();
+                        Sound.playObtainHeartPowerUp();
                         heart.incrementAndGet();
                     }
 
