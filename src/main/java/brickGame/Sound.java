@@ -16,6 +16,7 @@ public class Sound {
     private static final String PLATFORMHIT_FILE = "src/main/resources/Sound/PlatformSound.mp3";
     private static final String POWERUP_FILE = "src/main/resources/Sound/PowerUp.mp3";
     private static final String LEVELUP_FILE = "src/main/resources/Sound/LevelUp.mp3";
+    private static final String SELECTBUTTON_FILE = "src/main/resources/Sound/SelectButton.mp3";
     private static MediaPlayer mediaPlayer;
 
     public static void playBackgroundMusic() {
@@ -101,5 +102,13 @@ public class Sound {
         blockBreakMediaPlayer.play();
         blockBreakMediaPlayer.setVolume(0.75);
     }
+
+    public static void playSelectButton() {
+        Media sound = new Media(new File(SELECTBUTTON_FILE).toURI().toString());
+        MediaPlayer blockBreakMediaPlayer = new MediaPlayer(sound);
+        blockBreakMediaPlayer.play();
+        blockBreakMediaPlayer.setVolume(3);
+    }
+}
 }
 
