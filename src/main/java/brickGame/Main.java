@@ -388,10 +388,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                          new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
                          if (currentHeart > 1) {
                         Sound.playLoseHeartSound();
+                        
                     }
 
                          if (currentHeart == 1) {
                              new Score().showGameOver(this);
+                             Sound.stopInGameMusic();
                              Sound.playLoseGameSound();
                              engine.stop();
                          }
@@ -404,6 +406,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         if (yBall >= yBreak - ballRadius) {
             if (xBall + ballRadius >= xBreak && xBall - ballRadius <= xBreak + breakWidth) {
                 // Collision with the platform
+                Sound.playHitPlatformSound();
                 hitTime = time;
                 resetCollideFlags();
                 collideToBreak = true;
@@ -624,6 +627,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         try {
             Sound.stopInGameMusic();
+            Sound.stopLoseScreenMusic();
             level = 0;
             heart = new AtomicInteger(3);
             score = 0;
@@ -681,9 +685,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     block.isDestroyed = true;
                     destroyedBlockCount++;
                     resetCollideFlags();
-                    Sound.playBlockBreakSound();
+                    
+                    if (block.type == block.BLOCK_NORMAL) { //seperate different sound effect for normal and power up blocks
+                        Sound.playBlockBreakSound();
+                    }
 
                     if (block.type == Block.BLOCK_CHOCO) {
+                        Sound.playObtainPowerUp();
                         final Bonus choco = new Bonus(block.row, block.column);
                         choco.timeCreated = time;
                         Platform.runLater(new Runnable() {
@@ -696,6 +704,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
 
                     if (block.type == Block.BLOCK_STAR) {
+                        Sound.playObtainPowerUp();
                         goldTime = time;
                         ball.setFill(new ImagePattern(new Image("goldball.png")));
                         System.out.println("gold ball");
@@ -704,6 +713,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     }
 
                     if (block.type == Block.BLOCK_HEART) {
+                        Sound.playObtainPowerUp();
                         heart.incrementAndGet();
                     }
 
