@@ -40,13 +40,17 @@ public class BrickBreakerMainMenu extends Application {
 
         VBox box = new VBox(10, new MainMenuButton("Enter Game", () -> {
             try {
+                Sound.playSelectButton();
                 Sound.stopBackgroundMusic();
                 startGame();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }),
-                new MainMenuButton("Exit", Platform::exit));
+                new MainMenuButton("Exit", () -> {
+                    Sound.playSelectButton();
+                    Platform.exit();
+                }));
 
         box.setBackground(new Background(new BackgroundFill(Color.web("black", 0.6), null, null)));
         box.setTranslateX(150);
