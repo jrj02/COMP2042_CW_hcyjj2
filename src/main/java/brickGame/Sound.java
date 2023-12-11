@@ -17,6 +17,7 @@ public class Sound {
     private static final String POWERUP_FILE = "src/main/resources/Sound/PowerUp.mp3";
     private static final String LEVELUP_FILE = "src/main/resources/Sound/LevelUp.mp3";
     private static final String SELECTBUTTON_FILE = "src/main/resources/Sound/SelectButton.mp3";
+    private static final String HEARTPOWERUP_FILE = "src/main/resources/Sound/HeartPowerUp.mp3";
     private static MediaPlayer mediaPlayer;
 
     public static void playBackgroundMusic() {
@@ -96,6 +97,13 @@ public class Sound {
         blockBreakMediaPlayer.setVolume(1);
     }
 
+    public static void playObtainHeartPowerUp() {
+        Media sound = new Media(new File(HEARTPOWERUP_FILE).toURI().toString());
+        MediaPlayer blockBreakMediaPlayer = new MediaPlayer(sound);
+        blockBreakMediaPlayer.play();
+        blockBreakMediaPlayer.setVolume(1);
+    }
+
     public static void playLevelUp() {
         Media sound = new Media(new File(LEVELUP_FILE).toURI().toString());
         MediaPlayer blockBreakMediaPlayer = new MediaPlayer(sound);
@@ -107,8 +115,8 @@ public class Sound {
         Media sound = new Media(new File(SELECTBUTTON_FILE).toURI().toString());
         MediaPlayer blockBreakMediaPlayer = new MediaPlayer(sound);
         blockBreakMediaPlayer.play();
-        blockBreakMediaPlayer.setVolume(3);
+        blockBreakMediaPlayer.setVolume(2);
     }
 }
-}
+
 
