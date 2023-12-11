@@ -123,14 +123,21 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void initializeLevel() {
 
         if (!loadFromSave) {
-            level++;
-            if (level > 1) {
-                new Score().showMessage("Level Up :)", this);
-            }
-            if (level == 10) {
-                new Score().showWin(this);
+            if (level == 3) {
+                new Score().showMessage("You Win :)", this);
+                Sound.stopInGameMusic();
+                level = 0;
+                restartGame();
                 return;
             }
+
+            level++;
+
+            if (level > 1) {
+                new Score().showMessage("Level Up :)", this);
+                Sound.playLevelUp();
+            }
+        }
         }
 
         if (!loadFromSave && blocks.isEmpty()) {
