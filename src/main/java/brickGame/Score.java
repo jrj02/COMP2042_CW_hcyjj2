@@ -64,6 +64,7 @@ public class Score {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                Sound.playLoseScreenMusic();
                 Label label = new Label("Game Over :(");
                 label.setTranslateX(200);
                 label.setTranslateY(250);
