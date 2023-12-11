@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
-//import sun.plugin2.message.Message;
+
 
 public class Score {
     public void show(final double x, final double y, int score, final Main main) {
@@ -72,6 +72,7 @@ public class Score {
                 label.setScaleY(2);
 
                 Button restart = new Button("Restart");
+                restart.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-size: 14");
                 restart.setTranslateX(220);
                 restart.setTranslateY(300);
                 restart.setOnAction(new EventHandler<ActionEvent>() {
