@@ -84,3 +84,16 @@ b. A pause button.
 
 c. A winning screen.
 - This is in accordance to the win-screen error previously mentioned in the 'implemented but not working properly' section. Initially, the fix was to cover-up the game win screen with another screen, which would be the win screen. It would contain a button that will lead the player back to either the starting screen of the game or the main menu.
+ -The implementation was semi-successful. What would happen was the win screen would appear in a seperate window to the game, and this would cause multiple states of the game to run in different windows.
+  - The obvious fix was to make it appear in the same window. But I couldn't get it to work, and at times it would crash the game. So I decided to not include it in.
+
+d. LoadSave feature in main menu.
+-Initially, the main menu had 3 buttons 'Start game', 'Loadsave' and 'Exit'. The start game would initialize a new game. The loadsave was intended to allow players to load a saved state from the main menu itself, but connecting the button to the loadgame method in the main class would cause some errors to occur and the main menu to crash or cause the other buttons to not work.
+-The solution was to remove this button entirely, and add the function of loadsave into the starting screen of the game instead (right below the start new game button). The main menu buttons would also be renamed to 'Enter game' and 'Exit'.
+
+5. New java classes----------------------------------------------------------------
+
+a. BrickBreakerMainMenu.jav class
+
+-Brief Description-
+Starting screen of the game. Main menu class is where the player would run the game. Contains a button to 
