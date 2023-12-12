@@ -91,9 +91,9 @@ d. LoadSave feature in main menu.
 -Initially, the main menu had 3 buttons 'Start game', 'Loadsave' and 'Exit'. The start game would initialize a new game. The loadsave was intended to allow players to load a saved state from the main menu itself, but connecting the button to the loadgame method in the main class would cause some errors to occur and the main menu to crash or cause the other buttons to not work.
 -The solution was to remove this button entirely, and add the function of loadsave into the starting screen of the game instead (right below the start new game button). The main menu buttons would also be renamed to 'Enter game' and 'Exit'.
 
-5. New java classes----------------------------------------------------------------
+5. New java classes---------------------------------------------------------------
 
-a. BrickBreakerMainMenu.jav class
+a. BrickBreakerMainMenu.java class:
 
 -Brief Description-
 
@@ -101,8 +101,23 @@ Starting screen of the game. Main menu class is where the player would run the g
 
 -Location of code-
 
-In another class called BrickBreakerMainMenu.jav. Some of the class method can be found in main, specifically the 'esc' button switch case, initializing the main menu screen on press.
+In another class called BrickBreakerMainMenu.java. Some of the class method can be found in main, specifically the 'esc' button switch case, initializing the main menu screen on press.
 
-b. Sound.jav class
+b. Sound.java class:
 
+-Brief Description-
 
+A class to initialize and manage all the sound files in the game.
+
+-Location of code-
+
+In another class called Sound.java. The class methods can be seen being called mostly in Main.java, but there are some instances in BrickBreakerMainMenu.java and Score.java.
+
+6. Modified java classes----------------------------------------------------------
+
+a. GameEngine.java:
+-Massive changes in this class. The main reason is the use of threads. The use of Thread.sleep causes issues when dealing with UI updates and transitions between levels. Its why in some instances, the level increment will increase infinitely.
+
+-The use of animation timer in place of threads is better for hanlding game loops.
+
+b. Main.java
