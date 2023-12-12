@@ -83,4 +83,4 @@ b. A pause button.
 - However, there was an error with the sound implementation, where the in-game sound would stop as inteneded, but won't resume when the game engine starts again. As such, the implementation of a pause button was scrapped and the functionality to exit the game was moved to the 'esc' button instead.
 
 c. A winning screen.
-- This is in accordance to the win-screen error
+- This is in accordance to the win-screen error previously mentioned in the 'implemented but not working properly' section. Initially, the fix was to cover-up the game win screen with another screen, which would be the win screen. It would contain a button that will lead the player back to either the starting screen of the game or the main menu.
