@@ -37,7 +37,7 @@ e. Button to Exit Game to Main Menu.
 f. Background Images and Assest Changes.
 - Added new background image in-game to fit the theme of the game. Changed platform image, ball image and gold ball image.
 
-f. Sound Effect and Background track.
+g. Sound Effect and Background track.
 - Initialized a new class, Sound.java. Here is a list of all sounds added and where:
 
 Background tracks-
@@ -49,4 +49,24 @@ Sound effects-
 a. Brick broken sfx. When a block breaks.
 b. Losing a heart sfx. When ball touches the ground.
 c. Platform sfx. When ball touches platform.
-d. Power-up sfx. When ball
+d. Power-up sfx. When ball breaks a choco or goldstar block.
+e. Heart power-up sfx. When ball breaks a heart block.
+f. Level up sfx. When player moves on to the next level.
+g. Select button. When pressing buttons in main menu and in-game.
+
+
+h. Save / Load feature.
+Pressing 's' in game saves a state of the game in the directory "". 
+Player can choose to load existing save file when starting the game.
+Fixed an issue where the game would regenerate broken blocks when loading an existing save file.
+
+i. Losing Screen.
+When player loses all hearts, a button to try again will appear. This button takes the player back to the starting screen of the game.
+
+3. Implemented but not working properly-------------------------------------------
+
+List of features that sometimes does not work as intended. No game breaking features however.
+
+a. Block collision. Sometimes the block collision is a little iffy, but there is NO instance where the ball will phase through the blocks.
+b. Wall collision. Works but not as intended. Want it to collide at the radius of the ball (which happens sometimes), but sometimes it does not.
+c.Win screen. The game won't show the win screen. Instead it will automatically initialize the starting screen of the game, back to level 1.
