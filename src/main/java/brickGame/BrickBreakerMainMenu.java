@@ -28,6 +28,7 @@ public class BrickBreakerMainMenu extends Application {
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
         stage.setScene(new Scene(createContent()));
+        stage.setTitle("Brick Breaker City");
         stage.show();
         Sound.playBackgroundMusic();
     }
