@@ -32,8 +32,10 @@ public class GameEngine {
                 long elapsedNanoSeconds = now - lastUpdateTime;
                 double elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
 
+
                 onAction.onUpdate();
                 onAction.onPhysicsUpdate();
+
 
                 lastUpdateTime = now;
                 time++;
