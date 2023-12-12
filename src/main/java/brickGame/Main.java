@@ -4,10 +4,12 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -19,6 +21,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+
 
 public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction{
 
@@ -32,8 +36,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private final int breakHeight    = 30;
     private final int halfBreakWidth = breakWidth / 2;
 
-    private final int sceneWidth = 500; //made sceneWidth and sceneHeight final
-    private final int sceneHeight = 700; //fixed height typo
+    final int sceneWidth = 500; //made sceneWidth and sceneHeight final
+    final int sceneHeight = 700; //fixed height typo
 
     private static final int LEFT  = 1; //made LEFT and RIGHT final
     private static final int RIGHT = 2;
@@ -44,6 +48,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private boolean isGoldStatus      = false; //fixed typo for isGoldStatus
     private boolean isExistHeartBlock = false;
+    private boolean winMessageDisplayed = false;
 
     private Rectangle rect;
     private final int ballRadius = 10; //made ballRadius final. However, will be revisited in case want to implement
@@ -113,6 +118,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 blocks.clear();
                 chocos.clear();
                 destroyedBlockCount = 0;
+
                 initializeLevel();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -123,21 +129,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void initializeLevel() {
 
         if (!loadFromSave) {
-            if (level == 3) {
-                new Score().showMessage("You Win :)", this);
-                Sound.stopInGameMusic();
-                level = 0;
-                restartGame();
-                return;
-            }
-
             level++;
-
-            if (level > 1) {
+            if (level >1){
                 new Score().showMessage("Level Up :)", this);
                 Sound.playLevelUp();
             }
-        }
+            if (level == 18) {
+                new Score().showWin(this);
+                return;
+            }
         }
 
         if (!loadFromSave && blocks.isEmpty()) {
@@ -174,12 +174,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         scene.getStylesheets().add("style.css");
         scene.setOnKeyPressed(this);
 
-        primaryStage.setTitle("Game");
+        primaryStage.setTitle("Brick Breaker City");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         if (!loadFromSave) {
-            if (level > 1 && level < 10) {
+           if (level > 1 && level < 18) {
                 load.setVisible(false);
                 newGame.setVisible(false);
                 engine = new GameEngine();
@@ -240,7 +240,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     type = Block.BLOCK_NORMAL;
                 }
                 blocks.add(new Block(j, i, colors[r % (colors.length)], type));
-                //System.out.println("colors " + r % (colors.length));
             }
         }
     }
@@ -257,13 +256,12 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 move(LEFT);
                 break;
             case RIGHT:
-
                 move(RIGHT);
                 break;
             case ESCAPE:
                 if (engine != null) {
                     engine.stop();
-                    Sound.stopInGameMusic();
+                    //Sound.stopInGameMusic();
                 }
                 showMainMenu();
                 break;
@@ -274,6 +272,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void showMainMenu() {
+
+        Sound.stopInGameMusic();
         BrickBreakerMainMenu mainMenu = new BrickBreakerMainMenu();
         try {
             mainMenu.start(primaryStage);
@@ -389,26 +389,27 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         if (yBall + ballRadius>= sceneHeight) {
 
-                 resetCollideFlags();
-                 synchronized (this) {
-                     goDownBall = false;
-                     if (!isGoldStatus) {
-                         int currentHeart = heart.getAndDecrement();
-                         new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
-                         if (currentHeart > 1) {
+            resetCollideFlags();
+            synchronized (this) {
+                goDownBall = false;
+                if (!isGoldStatus) {
+                    int currentHeart = heart.getAndDecrement();
+                    new Score().show((double) sceneWidth / 2, (double) sceneHeight / 2, -1, this);
+                    if (currentHeart > 1) {
                         Sound.playLoseHeartSound();
-                        
                     }
 
-                         if (currentHeart == 1) {
+                    if (currentHeart == 1) {
                              new Score().showGameOver(this);
                              Sound.stopInGameMusic();
                              Sound.playLoseGameSound();
                              engine.stop();
                          }
-                     }
-                 }
-            //return;
+
+                    }
+                }
+                //return;
+
         }
 
 
@@ -505,9 +506,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void checkDestroyedCount() {
         if (destroyedBlockCount == blocks.size()) {
-            //TODO win level todo...
-            //System.out.println("You Win");
-
             nextLevel();
         }
     }
@@ -694,8 +692,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     block.isDestroyed = true;
                     destroyedBlockCount++;
                     resetCollideFlags();
-                    
-                    if (block.type == block.BLOCK_NORMAL) { //seperate different sound effect for normal and power up blocks
+
+                    if (block.type == block.BLOCK_NORMAL) {
                         Sound.playBlockBreakSound();
                     }
 
