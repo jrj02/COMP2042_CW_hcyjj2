@@ -74,4 +74,13 @@ c.Win screen. The game won't show the win screen. Instead it will automatically 
 4. Features not implemented-------------------------------------------------------
 
 a. A new power-up.
--Initially a pierce ball power-up was supposed to be implemented. The idea was that the power-up will implement similiarly like the gold ball (changes the ball for a limited time).The collisions of the ball logic will also be swapped, so that when bouncing away from the block, it would bounce into the block.
+-Initially a pierce ball power-up was supposed to be implemented. The idea was that the power-up will implement similiarly like the gold ball (changes the ball for a limited time).The collisions of the ball logic will also be swapped, so that when bouncing away from the block, it would bounce into the block. 
+
+-An implementation was tried, but was not successful. The game would crash once the ball collides with a block. The issue was never resolved, so as a result it was taken out of the game.
+
+b. A pause button.
+- A pause button 'p' was to be added in-game, that would stop the game engine with stop.engine, and upon pressing the button 'p' again would initialize start.engine, resuming the game state. There was also a plan to add another background music during the paused state, and buttons to exit the game back to the main menu.
+- However, there was an error with the sound implementation, where the in-game sound would stop as inteneded, but won't resume when the game engine starts again. As such, the implementation of a pause button was scrapped and the functionality to exit the game was moved to the 'esc' button instead.
+
+c. A winning screen.
+- This is in accordance to the win-screen error
