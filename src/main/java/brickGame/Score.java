@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
-
+//import sun.plugin2.message.Message;
 
 public class Score {
     public void show(final double x, final double y, int score, final Main main) {
@@ -76,6 +76,7 @@ public class Score {
                 restart.setTranslateX(220);
                 restart.setTranslateY(300);
                 restart.setOnAction(new EventHandler<ActionEvent>() {
+
                     @Override
                     public void handle(ActionEvent event) {
                         main.restartGame();
@@ -89,19 +90,14 @@ public class Score {
     }
 
     public void showWin(final Main main) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Label label = new Label("You Win :)");
-                label.setTranslateX(200);
-                label.setTranslateY(250);
-                label.setScaleX(2);
-                label.setScaleY(2);
+        Platform.runLater(() -> {
+            Label label = new Label("You Win :)");
+            label.setTranslateX((main.sceneWidth - label.getWidth()) / 2);  // Center horizontally
+            label.setTranslateY(main.sceneHeight / 2);  // Center vertically
+            label.setScaleX(2);
+            label.setScaleY(2);
 
-
-                main.root.getChildren().addAll(label);
-
-            }
+            main.root.getChildren().addAll(label);
         });
     }
 }
