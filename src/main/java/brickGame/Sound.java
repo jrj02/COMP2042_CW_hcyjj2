@@ -2,18 +2,17 @@ package brickGame;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
 import java.io.File;
 
 public class Sound {
-    private static final String MUSIC_FILE = "src/main/resources/Sound/MainMenuMusic.mp3";
+    private static final String MAINMENUMUSIC_FILE = "src/main/resources/Sound/MainMenuMusic.mp3";
     private static final String INGAMEMUSIC_FILE = "src/main/resources/Sound/InGameMusic.mp3";
     private static final String BREAK_FILE = "src/main/resources/Sound/BrickBroken.mp3";
     private static final String LOSEHEART_FILE = "src/main/resources/Sound/LoseHeart.mp3";
     private static final String LOSEGAME_FILE = "src/main/resources/Sound/LoseGame.mp3";
     private static final String LOSESCREEN_FILE = "src/main/resources/Sound/LoseScreenMusic.mp3";
-    private static final String PLATFORMHIT_FILE = "src/main/resources/Sound/PlatformSound.mp3";
+    private static final String PLATFORMHIT_FILE = "src/main/resources/Sound/PlatformHit.mp3";
     private static final String POWERUP_FILE = "src/main/resources/Sound/PowerUp.mp3";
     private static final String LEVELUP_FILE = "src/main/resources/Sound/LevelUp.mp3";
     private static final String SELECTBUTTON_FILE = "src/main/resources/Sound/SelectButton.mp3";
@@ -21,7 +20,7 @@ public class Sound {
     private static MediaPlayer mediaPlayer;
 
     public static void playBackgroundMusic() {
-        Media sound = new Media(new File(MUSIC_FILE).toURI().toString());
+        Media sound = new Media(new File(MAINMENUMUSIC_FILE).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
@@ -32,6 +31,7 @@ public class Sound {
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
+        mediaPlayer.setVolume(0.5);
     }
 
     public static void playLoseScreenMusic() {
@@ -41,7 +41,6 @@ public class Sound {
         mediaPlayer.play();
         mediaPlayer.setVolume(0.5);
     }
-
 
     public static void stopBackgroundMusic() {
         if (mediaPlayer != null) {
@@ -66,7 +65,7 @@ public class Sound {
         Media sound = new Media(new File(BREAK_FILE).toURI().toString());
         MediaPlayer blockBreakMediaPlayer = new MediaPlayer(sound);
         blockBreakMediaPlayer.play();
-        blockBreakMediaPlayer.setVolume(1.5);
+        blockBreakMediaPlayer.setVolume(0.5);
     }
 
     public static void playLoseHeartSound() {
@@ -118,5 +117,4 @@ public class Sound {
         blockBreakMediaPlayer.setVolume(2);
     }
 }
-
 
