@@ -2,7 +2,7 @@
 
 1. Compilation instruction--------------------------------------------------------
 
-To compile and run the game, download the entire codebase from github. Save it under a folder, any name. Open the folder in IntelliJ under existing project. Once you have opened the folder, import the java library. Then, all errors will cease. Run the game from the main menu class.
+To compile and run the game, download the entire codebase from github. Save it under a folder, any name. Open the folder in IntelliJ under existing project. Once you have opened the folder, import the java library into the project structure. Then, all errors will cease. Run the game from the BrickBreakerMainMenu class.
 
 2. Implemented and working properly-----------------------------------------------
 
@@ -147,9 +147,13 @@ d. Block.java
 - This took me so long to fix. And it was unexpected as well because it only happened after I changed some of the code in main and other areas. It took me a while but i managed to fix it after adding resetCollideFlag() to the bottom wall collision checker.
 
 2. Multi-windows appearing during the game.
--The implementation of the main menu class caused some error to the game. Basically, initially, when the main menu would call the start() method from Main.java, the game would initialize in a new window. This caused some multi-window issues to occur. For example, sometimes, when loading from a saved state, the game will play as intended but then a new window would appear, running the next level while the previous window runs the current level.
+-The implementation of the main menu class caused some error to the game. Initially, when the main menu would call the start() method from Main.java, the game would initialize in a new window. This caused some multi-window issues to occur. For example, sometimes, when loading from a saved state, the game will play as intended but then a new window would appear, running the next level while the previous window runs the current level.
 
 -Managed to fix the initial issue of the main menu, which was the main menu opening a new window when initializing the start() method. By fixing this issue (making it so that it initializes on the same window), the issue of multi window never appeared again.
+
+3. Implementation of sound effects in game.
+-The first attempt at sound implementation was to add a brick breaking sound effet. When this happened, an error would occur that would crash the game once a brick was broken. The idea was scrapped for the time being and later revisited.
+-The multi-window also caused some complications. Specifically, the main menu would play a main menu track. Once the enter game button is pressed, the game would be initialised in another window, where it would play the in-game audio. Since the main menu is still opened in a previous window, the sound would overlap. Fixing the multi-window error fixed this complication as well.
 
 3. Implementation of sound effects.
 -The very first attempt to implement sound into the game was a sound effect for the brick breaking. However, it was not successful as the game would crash once a brick was broken. The idea of implementing sound was scrapped for a while before being revisited again.
