@@ -70,3 +70,8 @@ List of features that sometimes does not work as intended. No game breaking feat
 a. Block collision. Sometimes the block collision is a little iffy, but there is NO instance where the ball will phase through the blocks.
 b. Wall collision. Works but not as intended. Want it to collide at the radius of the ball (which happens sometimes), but sometimes it does not.
 c.Win screen. The game won't show the win screen. Instead it will automatically initialize the starting screen of the game, back to level 1.
+
+4. Features not implemented-------------------------------------------------------
+
+a. A new power-up.
+-Initially a pierce ball power-up was supposed to be implemented. The idea was that the power-up will implement similiarly like the gold ball (changes the ball for a limited time).The collisions of the ball logic will also be swapped, so that when bouncing away from the block, it would bounce into the block.
