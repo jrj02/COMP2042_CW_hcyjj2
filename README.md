@@ -121,4 +121,4 @@ a. GameEngine.java:
 -The use of animation timer in place of threads is better for hanlding game loops.
 
 b. Main.java
-- Fixed an issue with the infinite lives loss on the second life lost. There was no resetcollideflag() when checking for bottom wall collision. This led to the bottom wall collision to not initiate during the next collision
+- Fixed an issue with the infinite lives loss on the second life lost. There was no resetcollideflag() when checking for bottom wall collision. This led to the bottom wall collision to not initiate during the next collision boundary, but the lives will still be lost once the ball crosses that 'invisible' boundary.
