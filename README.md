@@ -122,3 +122,35 @@ a. GameEngine.java:
 
 b. Main.java
 - Fixed an issue with the infinite lives loss on the second life lost. There was no resetcollideflag() when checking for bottom wall collision. This led to the bottom wall collision to not initiate during the next collision boundary, but the lives will still be lost once the ball crosses that 'invisible' boundary.
+
+-Added a new method called initializeLevel method. The use of this method is to initialize the game assests. This method would be called in multiple instances, such as in loadgame, savegame and start.
+
+-Fixed the issue of save and load game, where the blocks count would regenerate eventhough they are destroyed.
+
+-Added music into the main class.
+
+-Added 3 new method checkLeftCollision, checkRightCollision and checkTopCollision to for better wall collision handling. The collisions include the ballRadius as well so that the ball can bounce off the wall from its radius instead of the center.
+
+c. Score.java
+
+-Fixed the show and showMessage to not use threads. This fixed the error of the game crashing when two or more blocks are destroyed at once or in a very time interval.
+
+-Added a soundtrack for when player loses.
+
+d. Block.java
+
+-Updated the checkCollisionWithBlock method to include ballRadius, so that the ball will bounce of the block at the radius of the ball instead of its center (sometimes happens, sometimes doesn't).
+
+7. Unexpected Problems------------------------------------------------------------
+
+1. Infinitely losing lives upon second life lost.
+- This took me so long to fix. And it was unexpected as well because it only happened after I changed some of the code in main and other areas. It took me a while but i managed to fix it after adding resetCollideFlag() to the bottom wall collision checker.
+
+2. Multi-windows appearing during the game.
+-The implementation of the main menu class caused some error to the game. Basically, initially, when the main menu would call the start() method from Main.java, the game would initialize in a new window. This caused some multi-window issues to occur. For example, sometimes, when loading from a saved state, the game will play as intended but then a new window would appear, running the next level while the previous window runs the current level.
+
+-Managed to fix the initial issue of the main menu, which was the main menu opening a new window when initializing the start() method. By fixing this issue (making it so that it initializes on the same window), the issue of multi window never appeared again.
+
+3. Implementation of sound effects.
+-The very first attempt to implement sound into the game was a sound effect for the brick breaking. However, it was not successful as the game would crash once a brick was broken. The idea of implementing sound was scrapped for a while before being revisited again.
+-The multi-window issue I mentioned above also caused some complications in the implementation of the sound. Specifically, when the main menu background music would play, and the game is initialised, the game would start alongside the in-game music, but the 
