@@ -96,4 +96,13 @@ d. LoadSave feature in main menu.
 a. BrickBreakerMainMenu.jav class
 
 -Brief Description-
-Starting screen of the game. Main menu class is where the player would run the game. Contains a button to 
+
+Starting screen of the game. Main menu class is where the player would run the game. Contains a button to initilize the start method in main called "Enter game" and an exit button.
+
+-Location of code-
+
+In another class called BrickBreakerMainMenu.jav. Some of the class method can be found in main, specifically the 'esc' button switch case, initializing the main menu screen on press.
+
+b. Sound.jav class
+
+
