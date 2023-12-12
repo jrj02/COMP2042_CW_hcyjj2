@@ -35,7 +35,18 @@ e. Button to Exit Game to Main Menu.
 - Pressing 'esc' while in-game brings back player to the main menu.
 
 f. Background Images and Assest Changes.
-- 
+- Added new background image in-game to fit the theme of the game. Changed platform image, ball image and gold ball image.
 
 f. Sound Effect and Background track.
-- Initialized a new class, Sound.java. Added background sound and 
+- Initialized a new class, Sound.java. Here is a list of all sounds added and where:
+
+Background tracks-
+a. Main menu song. Added to main menu.
+b. In-game song. Added to in-game.
+c. Game over song. Added to losing screen.
+
+Sound effects-
+a. Brick broken sfx. When a block breaks.
+b. Losing a heart sfx. When ball touches the ground.
+c. Platform sfx. When ball touches platform.
+d. Power-up sfx. When ball
